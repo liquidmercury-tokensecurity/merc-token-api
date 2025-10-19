@@ -1,4 +1,4 @@
-// API endpoint to return Liquid Mercury (MERC) circulating supply (static value)
+// API endpoint to fetch Liquid Mercury (MERC) circulating supply from CoinGecko
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,14 +15,46 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Static circulating supply value
-  // Update this number as needed
-  const CIRCULATING_SUPPLY = 750000000;
+  try {
+    // Fetch MERC data from CoinGecko Pro API
+    const url = 'https://pro-api.coingecko.com/api/v3/coins/liquid-mercury';
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-cg-pro-api-key': process.env.COINGECKO_API_KEY || ,
+        'Accept': 'application/json'
+      }
+    };
 
-  // Return formatted response
-  return res.status(200).json({
-    circulating_supply: CIRCULATING_SUPPLY,
-    source: 'Static',
-    timestamp: new Date().toISOString(),
-  });
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`CoinGecko API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Extract circulating supply from market data
+    const circulatingSupply = data.market_data?.circulating_supply;
+
+    if (!circulatingSupply) {
+      throw new Error('Circulating supply not available in response');
+    }
+
+    // Return formatted response
+    return res.status(200).json({
+      circulating_supply: circulatingSupply,
+      source: 'CoinGecko',
+      timestamp: new Date().toISOString(),
+    });
+
+  } catch (error) {
+    console.error('Error fetching MERC circulating supply:', error);
+    
+    return res.status(500).json({
+      error: 'Failed to fetch circulating supply',
+      message: error.message,
+      timestamp: new Date().toISOString(),
+    });
+  }
 }

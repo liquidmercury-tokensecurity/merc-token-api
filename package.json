@@ -1,6 +1,7 @@
 {
   "name": "merc-token-api",
   "version": "1.0.0",
+  "type": "module",
   "description": "Public API endpoint for Liquid Mercury (MERC) token supply information",
   "main": "api/totalsupply.js",
   "scripts": {
@@ -15,4 +16,5 @@
   ],
   "author": "",
   "license": "MIT"
+
 }

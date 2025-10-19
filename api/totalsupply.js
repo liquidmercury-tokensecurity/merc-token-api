@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || 'F4MQFMZ1FWDWM24HU4F5A8Y2WNSSE6QTYN';
     
     // Fetch total supply from Etherscan
-    const url = `https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress=${CONTRACT_ADDRESS}&apikey=${ETHERSCAN_API_KEY}`;
+    const url = `https://api.etherscan.io/v2/api?chainid=1&module=stats&action=tokensupply&contractaddress=${CONTRACT_ADDRESS}&apikey=${ETHERSCAN_API_KEY}`;
     
     const response = await fetch(url, {
       headers: {
@@ -62,4 +62,5 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString(),
     });
   }
+
 }

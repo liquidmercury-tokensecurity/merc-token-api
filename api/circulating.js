@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     const options = {
       method: 'GET',
       headers: {
-        'x-cg-pro-api-key': process.env.COINGECKO_API_KEY || ,
+        'x-cg-pro-api-key': process.env.COINGECKO_API_KEY || 'CG-ZTi3MXb2P73v6NwW2UNpKtZV',
         'Accept': 'application/json'
       }
     };
@@ -58,3 +58,4 @@ export default async function handler(req, res) {
     });
   }
 }
+
